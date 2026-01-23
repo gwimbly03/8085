@@ -26,7 +26,6 @@ def encrypt(data: bytes, password: str) -> bytes:
     ciphertext = cipher.encrypt(pad(data, AES.block_size))
     return salt + cipher.iv + ciphertext
 
-
 def decrypt(enc_data: bytes, password: str) -> bytes:
     salt = enc_data[:16]
     iv = enc_data[16:32]
@@ -35,13 +34,10 @@ def decrypt(enc_data: bytes, password: str) -> bytes:
     cipher = AES.new(key, AES.MODE_CBC, iv)
     return unpad(cipher.decrypt(ciphertext), AES.block_size)
 
-
-
 def bytes_to_bits(data: bytes):
     for byte in data:
         for i in range(7, -1, -1):
             yield (byte >> i) & 1
-
 
 def bits_to_bytes(bits):
     out = bytearray()
@@ -51,9 +47,6 @@ def bits_to_bytes(bits):
             byte = (byte << 1) | bit
         out.append(byte)
     return bytes(out)
-
-
-
 
 def encode_png(cover_png, secret_file, output_png, password):
     img = Image.open(cover_png)
@@ -103,10 +96,8 @@ def encode_png(cover_png, secret_file, output_png, password):
     img.putdata(new_pixels)
     img.save(output_png, "PNG")
 
-    print("[+] Encoding complete")
-    print(f"[+] Output image: {output_png}")
-
-
+    print("Encoding complete")
+    print(f"Output image: {output_png}")
 
 def decode_png(stego_png, password, output_dir):
     img = Image.open(stego_png)
@@ -136,11 +127,8 @@ def decode_png(stego_png, password, output_dir):
     with open(output_path, "wb") as f:
         f.write(decrypted)
 
-    print("[+] Decoding complete")
-    print(f"[+] Extracted file: {output_path}")
-
-
-
+    print("Decoding complete")
+    print(f"Extracted file: {output_path}")
 
 def main():
     parser = argparse.ArgumentParser(
@@ -168,7 +156,7 @@ def main():
         elif args.mode == "decode":
             decode_png(args.image, args.key, args.output)
     except Exception as e:
-        print(f"[!] Error: {e}")
+        print(f"Error: {e}")
 
 
 if __name__ == "__main__":
